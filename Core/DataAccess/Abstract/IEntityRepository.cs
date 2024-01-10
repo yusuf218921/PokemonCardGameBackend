@@ -12,10 +12,10 @@ namespace Core.DataAccess.Abstract
         where T: class, IEntity, new()
     {
         public void Add(T entity);
-        public void Delete(int id);
+        public void Delete(T entity);
         public void Update(T entity);
-        public T Get(Expression<Func<T, bool>> filter);
-        public List<T> GetAll(Expression<Func<T, bool>> filter = null);
+        public IQueryable<T> Find(Expression<Func<T, bool>> filter, bool trackChanges);
+        public IQueryable<T> FindAll(bool trackChanges);
 
     }
 }

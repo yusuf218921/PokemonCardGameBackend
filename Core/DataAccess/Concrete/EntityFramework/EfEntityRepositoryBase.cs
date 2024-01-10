@@ -1,5 +1,6 @@
 ﻿using Core.DataAccess.Abstract;
 using Core.Entities.Abstract;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,30 +13,22 @@ namespace Core.DataAccess.Concrete.EntityFramework
     public class EfEntityRepositoryBase<TEntity> : IEntityRepository<TEntity>
         where TEntity : class, IEntity, new()
     {
-        private RepositoryContext _context;
+        private DbContext _context;
         public EfEntityRepositoryBase(DbContext context)
         {
             _context = context;
         }
-        public void Add(TEntity entity)
-        {
-            throw new NotImplementedException();
-        }
+        public void Add(TEntity entity) => _context.Set<TEntity>().Add(entity);
 
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public void Delete(TEntity entity) => _context.Set<TEntity>().Remove(entity);
 
-        public TEntity Get(Expression<Func<TEntity, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> filter, bool trackchanges) =>
+           !trackchanges ? _context.Set<TEntity>().Where(filter) :
+               _context.Set<TEntity>().Where(filter).AsNoTracking();
 
-        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<TEntity> FindAll(bool trackchanges)
+            => !trackchanges ? _context.Set<TEntity>()
+            : _context.Set<TEntity>().AsNoTracking();
 
         public void Update(TEntity entity)
         {

@@ -10,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace Core.DataAccess.Concrete.EntityFramework
 {
-    public class EfEntityRepositoryBase<TEntity> : IEntityRepository<TEntity>
+    public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
         where TEntity : class, IEntity, new()
+        where TContext: DbContext
     {
-        private DbContext _context;
-        public EfEntityRepositoryBase(DbContext context)
+        private TContext _context;
+        public EfEntityRepositoryBase(TContext context)
         {
             _context = context;
         }
@@ -30,9 +31,6 @@ namespace Core.DataAccess.Concrete.EntityFramework
             => !trackchanges ? _context.Set<TEntity>()
             : _context.Set<TEntity>().AsNoTracking();
 
-        public void Update(TEntity entity)
-        {
-            throw new NotImplementedException();
-        }
+        public void Update(TEntity entity) => _context.Set<TEntity>().Update(entity);
     }
 }

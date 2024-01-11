@@ -21,6 +21,6 @@ namespace Entities.Entity
         public int Def { get; set; }
         public int Spd { get; set; }
         public int Hp { get; set; }
-        public float catchRate { get; set; }
+        public int catchRate { get; set; }
     }
 }

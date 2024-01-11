@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Entity
 {
-    public class StongType : IEntity
+    public class StrongType : IEntity
     {
         public int Id { get; set; }
         public int TypeId { get; set; }
